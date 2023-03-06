@@ -13,10 +13,4 @@ export function* itemsSaga() {
     itemsActions.fetchItems.toString(),
     withLoading("items", fetchItemsSaga)
   );
-  yield takeLatest(
-    itemsAction.fechChartData.toString(),
-    withLoading((action) => action.payload, fetchItemsSaga)
-  );
 }
-
-// {type: 'fetchChartData', payload: 'uashyuhsa76asuyhsau' }
