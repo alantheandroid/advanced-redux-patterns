@@ -1,46 +1,40 @@
-# Getting Started with Create React App
+# Formik: Libreria di gestione di form in React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Formik semplifica la creazione e la gestione di form complessi in React grazie alla sua API pulita e ben documentata.
 
-## Available Scripts
+## Base
 
-In the project directory, you can run:
+### `useFormik`
 
-### `npm start`
+useFormik è un hook a cui passare gli `initialValues` e l'`onSubmit` del nostro form, e che ci ritorna un oggetto che contiene:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- `values`: lo state coi valori del form;
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+e alcuni helper methods tra cui:
 
-### `npm test`
+- `handleSubmit`: si occupa della submission;
+- `handleChange`: aggiorna i valori del form;
+- `handleBlur`: esegue una funzione quando un campo viene visitato;
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Convalida
 
-### `npm run build`
+L'hook si occupa anche di convalidare i campi del form se gli passiamo una funzione `validate` che ritorna un oggetto `errors` che rispecchia la stessa struttura di `values`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Campi visitati
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+La funzione `validate` viene eseguita a ogni pressione di tasto per qualsiasi input del form, quindi l'utente riceverebbe errori su campi ancora non visitati. Per ovviare a questo `useFormik` restituisce anche un oggetto `touched` che traccia i campi visitati. Per utilizzarlo basta assegna il metodo `handleBlur` alla prop `onBlur` degli input che si vogliono tracciare e l'utente visualizzerà solo gli errori dell'input che sta visitando in quel momento.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Yup
 
-### `npm run eject`
+La convalida degli input può essere gestita anche da altre librerie come ad es. Yup che usa un oggetto `validationSchema` che genera errori per le chiavi contenute negli oggetti `values`/`initialValues`/`touched` in maniera più semplice.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Avanzato
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### `getFieldProps`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Al posto di collegare a mano le prop degli input, useFormik fornisce il metodo `getFieldProps` che restituisce le prop collegate automaticamente una volta spreadato all'interno dell'input.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### `<Formik />`
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Possiamo risparmiare ancora più codice usando alcuni componenti che sfruttano un Context evitandoci di passare manualmente le prop.
+`<Formik />` è un Provider che utilizza internamente useFormik passando ai children l'oggetto ritornato dall'hook. `<Form />`, ``

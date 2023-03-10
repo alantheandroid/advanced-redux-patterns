@@ -4,7 +4,7 @@ import { withLoading } from "../loading/saga";
 import { itemsActions } from "./reducer";
 
 function* fetchItemsSaga() {
-  yield delay(3000);
+  yield delay(1000);
   yield put(itemsActions.addItem("new item"));
 }
 
