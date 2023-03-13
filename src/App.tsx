@@ -19,6 +19,10 @@ function App() {
   const areItemsLoading = useSelector(selectAreItemsLoading);
   const dispatch = useDispatch();
 
+  const handleSubmit = (values: FormValues) => {
+    console.log(values);
+  };
+
   useEffect(() => {
     dispatch(itemsActions.fetchItems());
   }, [dispatch]);
@@ -26,7 +30,11 @@ function App() {
   if (areItemsLoading) return <p>Loading...</p>;
   return (
     <div className="App">
-      <Form className="signup-form" formConfig={formConfig} />
+      <Form
+        className="signup-form"
+        formConfig={formConfig}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }

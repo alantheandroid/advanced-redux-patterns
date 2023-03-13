@@ -24,43 +24,32 @@ export const elementsMap = {
 type Props = {
   className?: string;
   formConfig?: InputItem[];
+  onSubmit: (values: FormValues) => void;
 };
 
-export const Form = ({ className, formConfig = [] }: Props) => {
-  const initialValues = formConfig?.reduce((acc, { type, id }) => {
-    switch (type) {
-      case "text":
-      case "email":
-      case "select":
-        acc[id] = "";
-        break;
-      case "number":
-        acc[id] = 0;
-        break;
-      default:
-        acc[id] = null;
-        break;
-    }
+export const Form = ({ className, formConfig = [], onSubmit }: Props) => {
+  const initialValues = generateInitialValues(formConfig);
 
-    return acc;
-  }, {} as FormValues);
+  const handleSubmit = (
+    values: FormValues,
+    { setSubmitting }: FormikHelpers<FormValues>
+  ) => {
+    onSubmit(values);
+    setTimeout(() => {
+      alert(JSON.stringify(values, null, 2));
+      setSubmitting(false);
+    }, 500);
+  };
+
   return (
     <div className={className}>
       <Formik
         initialValues={initialValues}
         validationSchema={basicSchema}
-        onSubmit={(
-          values: FormValues,
-          { setSubmitting }: FormikHelpers<FormValues>
-        ) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 500);
-        }}
+        onSubmit={handleSubmit}
       >
         <FormikForm>
-          {formConfig?.map(({ type, id, placeholder }) => {
+          {formConfig?.map(({ type, id, placeholder, options }) => {
             const Component = elementsMap[type];
             return (
               <Component
