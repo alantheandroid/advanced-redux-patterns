@@ -1,16 +1,16 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Formik, Field, Form as FormikForm, FormikHelpers } from "formik";
-import { formConfig, InputItem, optionsMap } from "./config";
+import { generateInitialValues, InputItem } from "./config";
 import Input from "../Input";
-import Select from "../Select";
+import Select, { SelectOption } from "../Select";
 import Checkbox from "../Checkbox";
 import basicSchema from "../../schemas";
 
 export type InputType = "text" | "email" | "number";
 
 export type FormValues = {
-  [key: string]: string | number | null;
+  [key: string]: string | SelectOption[] | number | boolean | null;
 };
 
 export const elementsMap = {
@@ -57,7 +57,7 @@ export const Form = ({ className, formConfig = [], onSubmit }: Props) => {
                 id={id}
                 placeholder={placeholder}
                 type={type}
-                {...(type === "select" && { options: optionsMap["countries"] })}
+                {...(type === "select" && { options })}
               />
             );
           })}

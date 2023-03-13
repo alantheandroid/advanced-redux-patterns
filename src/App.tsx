@@ -8,7 +8,7 @@ import { selectAreItemsLoading } from "./features/loading/selectors";
   selectAllUsers,
   usersFilterSelectors,
 } from "./features/users/selectors"; */
-import { Form } from "./components/Form";
+import { Form, FormValues } from "./components/Form";
 import { formConfig } from "./components/Form/config";
 
 function App() {
