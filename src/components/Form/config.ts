@@ -1,11 +1,20 @@
 import { InputType, FormValues } from ".";
 import { SelectOption } from "../Select";
 
+type InputChildrenType = {
+  text: string[];
+  email: string[];
+  number: number[];
+  select: SelectOption[];
+  checkbox: boolean[];
+};
+
 export type InputItem = {
   type: InputType | "select" | "checkbox";
   id: string;
   initialValue?: string;
   placeholder?: string;
+  options?: SelectOption[];
   children?: any /* nested items go here */;
 };
 
@@ -16,21 +25,43 @@ export const formConfig: InputItem[] = [
   {
     type: "select",
     id: "country",
-    placeholder: "Insert email address",
+    placeholder: "Insert country",
+    options: [
+      {
+        label: "Italia",
+        value: "ITA",
+      },
+      {
+        label: "USA",
+        value: "USA",
+      },
+    ],
   },
+  { type: "checkbox", id: "rememberMe", placeholder: "Remember me" },
 ];
 
-export const countriesOptions: SelectOption[] = [
-  {
-    label: "Italia",
-    value: "ITA",
-  },
-  {
-    label: "USA",
-    value: "USA",
-  },
-];
-
-export const optionsMap = {
-  countries: countriesOptions,
+export const generateInitialValues = (formConfig: InputItem[]) => {
+  return formConfig.reduce((acc, { type, id, initialValue }) => {
+    if (initialValue) {
+      acc[id] = initialValue;
+    } else {
+      switch (type) {
+        case "text":
+        case "email":
+        case "select":
+          acc[id] = "";
+          break;
+        case "number":
+          acc[id] = 0;
+          break;
+        case "checkbox":
+          acc[id] = false;
+          break;
+        default:
+          acc[id] = null;
+          break;
+      }
+    }
+    return acc;
+  }, {} as FormValues);
 };
