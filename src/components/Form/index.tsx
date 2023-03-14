@@ -1,7 +1,6 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Formik, Field, Form as FormikForm, FormikHelpers } from "formik";
-import { formConfig, InputItem, optionsMap } from "./config";
+import { Formik, Form as FormikForm, FormikHelpers } from "formik";
+import { InputItem, optionsMap } from "./config";
 import Input from "../Input";
 import Select from "../Select";
 import Checkbox from "../Checkbox";
