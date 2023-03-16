@@ -1,69 +1,98 @@
-import * as React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Formik, Form as FormikForm, FormikHelpers } from "formik";
-import { generateInitialValues, InputItem } from "./config";
-import Input from "../Input";
-import Select, { SelectOption } from "../Select";
-import Checkbox from "../Checkbox";
+import { InputItem } from "./config";
 import basicSchema from "../../schemas";
-
-export type InputType = "text" | "email" | "number";
-
-export type FormValues = {
-  [key: string]: string | SelectOption[] | number | boolean | null;
-};
-
-export const elementsMap = {
-  select: Select,
-  text: Input,
-  email: Input,
-  number: Input,
-  checkbox: Checkbox,
-};
+import { elementsMap, FormValues, generateInitialValues } from "./utils";
+import SubForm from "../SubForm";
 
 type Props = {
+  title: string;
   className?: string;
-  formConfig?: InputItem[];
-  onSubmit: (values: FormValues) => void;
+  initialFormConfig?: InputItem[];
+  onSubmit?: (values: FormValues) => void;
 };
 
-export const Form = ({ className, formConfig = [], onSubmit }: Props) => {
-  const initialValues = generateInitialValues(formConfig);
+export const inputMap = (formConfig: InputItem[]) => {
+  return formConfig.map(
+    ({ type, id, placeholder, options, children }, index) => {
+      // separa creazione SubForm
+      if (type === "subform") {
+        return (
+          <SubForm inputs={children} key={id + index} label={placeholder} />
+        );
+      } else {
+        const Component = elementsMap[type];
+        return (
+          <Component
+            key={id + index}
+            id={id}
+            placeholder={placeholder}
+            type={type}
+            {...(type === "select" && { options })}
+            {...(type === "checkbox" && { label: placeholder })}
+          />
+        );
+      }
+    }
+  );
+};
+
+export const Form = ({
+  title,
+  className,
+  initialFormConfig = [],
+  onSubmit,
+}: Props) => {
+  const [formConfig, setFormConfig] = useState(initialFormConfig);
+
+  const initialValues = useMemo(
+    () => generateInitialValues(formConfig),
+    [formConfig]
+  );
 
   const handleSubmit = (
     values: FormValues,
     { setSubmitting }: FormikHelpers<FormValues>
   ) => {
-    onSubmit(values);
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 500);
+    onSubmit?.(values);
+    setSubmitting(false);
   };
 
   return (
     <div className={className}>
+      {title && <h2 className="form-title">{title}</h2>}
+
       <Formik
         initialValues={initialValues}
         validationSchema={basicSchema}
         onSubmit={handleSubmit}
       >
         <FormikForm>
-          {formConfig?.map(({ type, id, placeholder, options }) => {
-            const Component = elementsMap[type];
-            return (
-              <Component
-                key={id}
-                id={id}
-                placeholder={placeholder}
-                type={type}
-                {...(type === "select" && { options })}
-              />
-            );
-          })}
+          <>
+            {inputMap(formConfig)}
 
-          <button type="submit">Submit</button>
+            <button type="submit" className="submit-button">
+              Submit
+            </button>
+          </>
         </FormikForm>
       </Formik>
     </div>
   );
 };
+
+/* const handleAddEmail = () => {
+  return setFormConfig((state) => {
+    const firstEmailInput = state.findIndex(
+      (input) => input.type === "email"
+    );
+    const newMailInput: InputItem = {
+      type: "email",
+      id: "otherEmail",
+      placeholder: "Add another e-mail address",
+    };
+    state.splice(firstEmailInput, 0, newMailInput);
+    console.log({ formConfig: formConfig, inputMap: inputMap(formConfig) });
+    return state;
+  });
+}; */
