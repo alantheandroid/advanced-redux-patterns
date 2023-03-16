@@ -35,7 +35,6 @@
   padding: 1rem 0;
   width: 100%;
   background-color: white;
-  /* border: 2px solid lightseagreen; */
   border-radius: 1rem;
   color: lightseagreen;
 }
@@ -92,6 +91,16 @@
 
 .input-label {
   color: lightseagreen;
+}
+
+.add-input-button {
+  background-color: transparent;
+  border: 0.2rem solid white;
+  border-radius: 0.5rem;
+  margin: 0 0.5rem;
+  color: lightseagreen;
+  cursor: pointer;
+  padding: 0.25rem 0;
 }
 
 .submit-button {
