@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Formik, Form as FormikForm, FormikHelpers } from "formik";
-import { InputItem } from "./config";
 import basicSchema from "../../schemas";
-import { elementsMap, FormValues, generateInitialValues } from "./utils";
+import { elementsMap, generateInitialValues } from "./utils";
 import SubForm from "../SubForm";
+import { FormValues, InputItem } from "./types";
 
 type Props = {
   title: string;

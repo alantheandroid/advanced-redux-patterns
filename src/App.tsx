@@ -10,7 +10,7 @@ import { selectAreItemsLoading } from "./features/loading/selectors";
 } from "./features/users/selectors"; */
 import { Form } from "./components/Form";
 import { formConfig } from "./components/Form/config";
-import { FormValues } from "./components/Form/utils";
+import { FormValues } from "./components/Form/types";
 
 function App() {
   /* const [userName, setUserName] = useState<string>("");

@@ -1,6 +1,6 @@
 import React from "react";
 import { useField } from "formik";
-import { InputItem } from "../Form/config";
+import { InputItem } from "../Form/types";
 
 type Props = {
   label?: string;

@@ -1,7 +1,6 @@
 import React from "react";
 import { inputMap } from "../Form";
-import { InputItem } from "../Form/config";
-import { elementsMap } from "../Form/utils";
+import { InputItem } from "../Form/types";
 
 type Props = {
   inputs?: InputItem[];
