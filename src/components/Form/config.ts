@@ -1,34 +1,16 @@
-import { InputType, FormValues } from ".";
-import { SelectOption } from "../Select";
-
-type InputChildrenType = {
-  text: string[];
-  email: string[];
-  number: number[];
-  select: SelectOption[];
-  checkbox: boolean[];
-};
-
-export type InputItem = {
-  type: InputType | "select" | "checkbox";
-  id: string;
-  initialValue?: string;
-  placeholder?: string;
-  options?: SelectOption[];
-  children?: any /* nested items go here */;
-};
+import { InputItem } from "./types";
 
 export const formConfig: InputItem[] = [
-  { type: "text", id: "firstName", placeholder: "Insert first name" },
-  { type: "text", id: "lastName", placeholder: "Insert last name" },
-  { type: "email", id: "email", placeholder: "Insert email address" },
+  { type: "text", id: "firstName", placeholder: "First name" },
+  { type: "text", id: "lastName", placeholder: "Last name" },
+  { type: "email", id: "email", placeholder: "E-mail address" },
   {
     type: "select",
     id: "country",
-    placeholder: "Insert country",
+    placeholder: "Country",
     options: [
       {
-        label: "Italia",
+        label: "Italy",
         value: "ITA",
       },
       {
@@ -37,31 +19,31 @@ export const formConfig: InputItem[] = [
       },
     ],
   },
-  { type: "checkbox", id: "rememberMe", placeholder: "Remember me" },
+  {
+    type: "subform",
+    id: "socials",
+    multiple: false,
+    children: [
+      {
+        type: "text",
+        id: "facebook",
+        placeholder: "Facebook username",
+      },
+      {
+        type: "text",
+        id: "instagram",
+        placeholder: "Instagram username",
+      },
+    ],
+  },
+  {
+    type: "subform",
+    id: "family",
+    placeholder: "Family",
+    multiple: true,
+    children: [
+      { type: "text", id: "childName", placeholder: "Your child's name" },
+    ],
+  },
+  { type: "checkbox", id: "rememberMe", placeholder: "Remember me?" },
 ];
-
-export const generateInitialValues = (formConfig: InputItem[]) => {
-  return formConfig.reduce((acc, { type, id, initialValue }) => {
-    if (initialValue) {
-      acc[id] = initialValue;
-    } else {
-      switch (type) {
-        case "text":
-        case "email":
-        case "select":
-          acc[id] = "";
-          break;
-        case "number":
-          acc[id] = 0;
-          break;
-        case "checkbox":
-          acc[id] = false;
-          break;
-        default:
-          acc[id] = null;
-          break;
-      }
-    }
-    return acc;
-  }, {} as FormValues);
-};
