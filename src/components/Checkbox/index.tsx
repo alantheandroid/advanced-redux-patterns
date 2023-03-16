@@ -19,12 +19,16 @@ const Checkbox = ({ label, children, id, ...props }: Props) => {
     type: "checkbox",
   });
   return (
-    <>
-      {label && <label className="checkbox-input">{label}</label>}
-      <input {...field} {...props} />
-      {children}
-      {meta.touched && meta.error && <div className="error">{meta.error}</div>}
-    </>
+    <div className="input-item">
+      <div>
+        <input {...field} {...props} />
+        {label && <label className="input-label">{label}</label>}
+        {children}
+      </div>
+      {meta.touched && meta.error && (
+        <div className="validation-error">{meta.error}</div>
+      )}
+    </div>
   );
 };
 
