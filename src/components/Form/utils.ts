@@ -12,7 +12,7 @@ export const elementsMap = {
 };
 
 export const generateInitialValues = (formConfig: InputItem[]) => {
-  return formConfig.reduce((acc, { type, id, initialValue }) => {
+  return formConfig.reduce((acc, { type, id, children, initialValue }) => {
     if (initialValue) {
       acc[id] = initialValue;
     } else {
@@ -27,6 +27,9 @@ export const generateInitialValues = (formConfig: InputItem[]) => {
           break;
         case "checkbox":
           acc[id] = false;
+          break;
+        case "subform":
+          if (children) acc[id] = generateInitialValues(children);
           break;
         default:
           acc[id] = null;

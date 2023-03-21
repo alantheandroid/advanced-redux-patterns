@@ -1,12 +1,12 @@
 export type InputType = "text" | "email" | "number";
 
+export type FormValues = {
+  [key: string]: string | number | boolean | FormValues | null;
+};
+
 export type SelectOption = {
   label: string;
   value: string;
-};
-
-export type FormValues = {
-  [key: string]: string | SelectOption[] | number | boolean | null;
 };
 
 export type InputItem = {
@@ -14,7 +14,7 @@ export type InputItem = {
   id: string;
   initialValue?: string;
   placeholder?: string;
-  multiple?: boolean;
   options?: SelectOption[];
-  children?: InputItem[] /* nested items go here */;
+  multiple?: boolean;
+  children?: InputItem[];
 };
